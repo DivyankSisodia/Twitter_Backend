@@ -1,48 +1,46 @@
 import Tweet from '../models/tweets.js';
+import CrudRepository from './crud-repository.js';
 
-class TweetRepository{
+class TweetRepository extends CrudRepository{
 
-    async create(data){
+    constructor(){
+        super(Tweet);
+    }
+
+    async create(data) {
         try {
             const tweet = await Tweet.create(data);
-            console.log(tweet);
-            return tweet;
-        } catch (error) {
-            console.log('something went wrong in tweet repository');
-            throw error;
-        }
-    }
-
-    async getAll(){
-        try {
-            const tweets = await Tweet.find();
-            return tweets;
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    async get(id){
-        try {
-            const tweet = await Tweet.findById(id);
             return tweet;
         } catch (error) {
             console.log(error);
         }
     }
 
-    async destroy(id){
+    async getWithComments(id) {
         try {
-            const response = await Tweet.findByIdAndRemove(id);
-            return response;
+            const tweet = await Tweet.findById(id).populate({ path: 'comments' }).lean();
+            return tweet;
         } catch (error) {
             console.log(error);
         }
     }
 
-    async getWithComments(id){
+    async getAll(offset, limit) {
         try {
-            const tweet = await Tweet.findById(id).populate('comments');
+            const tweet = await Tweet.find().skip(offset).limit(limit);
+            return tweet;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async find(id) {
+        try {
+            /*
+             populate can only be used on a mongoose type query, not on a document
+            */
+            const tweet = await Tweet.findById(id).populate({ path: 'likes' });
+            return tweet;
         } catch (error) {
             console.log(error);
         }
