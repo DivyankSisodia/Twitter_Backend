@@ -1,4 +1,4 @@
-import Tweet from '../models/tweets';
+import Tweet from '../models/tweets.js';
 
 class CrudRepository{
     constructor(model){

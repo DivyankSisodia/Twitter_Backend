@@ -8,7 +8,7 @@ class LikeRepository extends CrudRepository{
 
     async findByUserAndLikeable(data) {
         try {
-            const like = await Like.findOne(data);
+            const like = await this.model.findOne(data).exec(); // Make sure to use exec() to execute the query
             return like;
         } catch (error) {
             throw error;
