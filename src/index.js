@@ -5,9 +5,7 @@ import apiRoutes from './routes/index.js';
 
 const app = express();
 
-import TweetService from './services/tweet-services.js'; 
 import bodyParser from 'body-parser';
-import e from 'express';
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
