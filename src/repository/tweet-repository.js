@@ -47,4 +47,4 @@ class TweetRepository{
     }
 }
 
-module.exports = TweetRepository();
+module.exports = TweetRepository;
