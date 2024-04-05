@@ -1,9 +1,10 @@
 import Tweet from '../models/tweets.js';
+import Comment from '../models/comment.js';
 import CrudRepository from './crud-repository.js';
 
-class TweetRepository extends CrudRepository{
+class TweetRepository extends CrudRepository {
 
-    constructor(){
+    constructor() {
         super(Tweet);
     }
 
@@ -16,15 +17,19 @@ class TweetRepository extends CrudRepository{
         }
     }
 
-    // for nested comments
     async getWithComments(id) {
         try {
-            const tweet = await Tweet.findById(id).populate({
-                path: 'comments' ,
-                populate: {
-                path: 'comments',
-                }
-            }).lean();
+            const tweet = await Tweet.findById(id)
+                .populate({
+                    path: 'comments',
+                    populate: {
+                        path: 'comments',
+                        populate: {
+                            path: 'comments',
+                        }
+                    }
+                })
+                .lean();
             return tweet;
         } catch (error) {
             console.log(error);
@@ -33,8 +38,8 @@ class TweetRepository extends CrudRepository{
 
     async getAll(offset, limit) {
         try {
-            const tweet = await Tweet.find().skip(offset).limit(limit);
-            return tweet;
+            const tweets = await Tweet.find().skip(offset).limit(limit);
+            return tweets;
         } catch (error) {
             console.log(error);
         }
@@ -42,9 +47,6 @@ class TweetRepository extends CrudRepository{
 
     async find(id) {
         try {
-            /*
-             populate can only be used on a mongoose type query, not on a document
-            */
             const tweet = await Tweet.findById(id).populate({ path: 'likes' });
             return tweet;
         } catch (error) {
