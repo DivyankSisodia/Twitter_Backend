@@ -23,7 +23,7 @@ class LikeService {
         });
         console.log("exists", exists);
         if (exists) {
-            const removedLike = await this.likeRepository.destroy(exists._id); // Adjust this line based on your repository implementation
+            const removedLike = await this.likeRepository.destroy(exists._id);
 
             likeable.likes.pull(exists._id);
             await likeable.save();
